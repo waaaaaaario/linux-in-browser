@@ -26,8 +26,7 @@ window.onload = function() {
         screen_container: document.getElementById("screen_container"),
         bios: { url: "bios/seabios.bin" },
         vga_bios: { url: "bios/vgabios.bin" },
-        // You will need to host a filesystem image to actually see a prompt
-        // For this example, it will boot to a black screen/BIOS error without one
+        cdrom: { url: "archlinux-2024.11.01-x86_64.iso" },
         autostart: true,
     });
 };
