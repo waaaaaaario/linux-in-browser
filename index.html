@@ -36,19 +36,25 @@
 
     <script src="libv86.js"></script>
 
-    <script>
-    "use strict";
+   <script>
+"use strict";
 
-    document.getElementById("iso_file").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+document.getElementById("iso_file").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-        console.log("Loading file: " + file.name);
+    console.log("Loading file: " + file.name);
+    
+    // Clear the screen container
+    document.getElementById("screen_container").innerHTML = "";
+
+    // 1. Create a FileReader to read the file as an ArrayBuffer
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        const arrayBuffer = e.target.result;
         
-        // Remove the "Select an ISO" message
-        document.getElementById("screen_container").innerHTML = "";
-
-        // Start the emulator
+        // 2. Start the emulator with the ArrayBuffer instead of the file object
         var emulator = new V86({
             wasm_path: "v86.wasm",
             memory_size: 256 * 1024 * 1024,
@@ -56,11 +62,13 @@
             screen_container: document.getElementById("screen_container"),
             bios: { url: "bios/seabios.bin" },
             vga_bios: { url: "bios/vgabios.bin" },
-            cdrom: { file: file },
+            // Use 'buffer' instead of 'file'
+            cdrom: { buffer: arrayBuffer },
             autostart: true,
         });
-    });
-    </script>
+    };
 
-</body>
-</html>
+    // 3. Read the file
+    reader.readAsArrayBuffer(file);
+});
+</script>
