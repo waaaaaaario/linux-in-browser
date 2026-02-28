@@ -38,10 +38,11 @@ window.onload = function() {
                 wasm_path: "v86.wasm",
                 memory_size: 256 * 1024 * 1024,
                 vga_memory_size: 2 * 1024 * 1024,
+                <input type="file" id="iso_file" />
                 screen_container: document.getElementById("screen_container"),
                 bios: { url: "bios/seabios.bin" },
                 vga_bios: { url: "bios/vgabios.bin" },
-                cdrom: { url: "https://corsproxy.io/?https://github.com/waaaaaaario/linux-in-browser/releases/download/OS/archlinux-2024.11.01-x86_64.iso" },
+                cdrom: { file: file },
                 autostart: true,
             });
         })
