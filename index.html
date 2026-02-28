@@ -1,51 +1,66 @@
 <!doctype html>
-<title>Self-Hosted Linux</title>
-<style>
-    body { padding: 0; margin: 0; background: #000; color: #fff; }
-    #screen_container {
-        position: absolute;
-        top: 0; bottom: 0; left: 0; right: 0;
-        display: flex; justify-content: center; align-items: center;
-        overflow: hidden;
-    }
-</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Self-Hosted Linux</title>
+    <style>
+        body { padding: 0; margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        #screen_container {
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+        /* Style the file input to sit on top of the screen */
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
 
-<div id="screen_container">
-    <div style="white-space: pre; font-family: monospace;">Loading emulator...</div>
-</div>
-
-<script src="libv86.js"></script>
-
-<script>
-"use strict";
-
-<div class="controls">
+    <div class="controls">
         <label for="iso_file">Select ISO:</label>
         <input type="file" id="iso_file" accept=".iso" />
     </div>
 
-   <script>
-        document.getElementById("iso_file").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+    <div id="screen_container">
+        <div style="white-space: pre; font-family: monospace;">Select an ISO to start...</div>
+    </div>
 
-            console.log("Loading file: " + file.name);
-            
-            var emulator = new V86({
-                wasm_path: "v86.wasm",
-                memory_size: 256 * 1024 * 1024,
-                vga_memory_size: 2 * 1024 * 1024,
-                <input type="file" id="iso_file" />
-                screen_container: document.getElementById("screen_container"),
-                bios: { url: "bios/seabios.bin" },
-                vga_bios: { url: "bios/vgabios.bin" },
-                cdrom: { file: file },
-                autostart: true,
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById("screen_container").innerText = "Error: " + err.message;
+    <script src="libv86.js"></script>
+
+    <script>
+    "use strict";
+
+    document.getElementById("iso_file").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        console.log("Loading file: " + file.name);
+        
+        // Remove the "Select an ISO" message
+        document.getElementById("screen_container").innerHTML = "";
+
+        // Start the emulator
+        var emulator = new V86({
+            wasm_path: "v86.wasm",
+            memory_size: 256 * 1024 * 1024,
+            vga_memory_size: 2 * 1024 * 1024,
+            screen_container: document.getElementById("screen_container"),
+            bios: { url: "bios/seabios.bin" },
+            vga_bios: { url: "bios/vgabios.bin" },
+            cdrom: { file: file },
+            autostart: true,
         });
-};
-</script>
+    });
+    </script>
+
+</body>
+</html>
