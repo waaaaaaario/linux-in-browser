@@ -19,21 +19,18 @@
 <script>
 "use strict";
 
-window.onload = function() {
-    console.log("Loading WASM...");
+<div class="controls">
+        <label for="iso_file">Select ISO:</label>
+        <input type="file" id="iso_file" accept=".iso" />
+    </div>
 
-    // 1. Explicitly fetch the WASM file first
-    fetch("v86.wasm")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to load v86.wasm. Check your Network tab for a 404.");
-            }
-            return response.arrayBuffer();
-        })
-        .then(() => {
-            console.log("WASM loaded. Starting emulator...");
+   <script>
+        document.getElementById("iso_file").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            console.log("Loading file: " + file.name);
             
-            // 2. Initialize emulator only after WASM is confirmed loaded
             var emulator = new V86({
                 wasm_path: "v86.wasm",
                 memory_size: 256 * 1024 * 1024,
