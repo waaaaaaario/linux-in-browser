@@ -19,13 +19,13 @@
 <script>
 "use strict";
 
-// 2. Wait until everything (including libv86.js) is loaded
+// 2. Wait until everything is fully loaded before running
 window.onload = function() {
-    console.log("Starting emulator...");
+    console.log("Attempting to start emulator...");
     
-    // Check if V86Starter exists
+    // Check if V86Starter actually exists now
     if (typeof V86Starter === "undefined") {
-        console.error("V86Starter is not defined! Check if libv86.js loaded successfully.");
+        console.error("V86Starter is still not defined!");
         return;
     }
 
