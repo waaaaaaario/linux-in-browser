@@ -1,11 +1,12 @@
 <!doctype html>
-<title>Cloudflare Pages Linux</title>
+<title>Self-Hosted Linux</title>
 <style>
     body { padding: 0; margin: 0; background: #000; color: #fff; }
     #screen_container {
         position: absolute;
         top: 0; bottom: 0; left: 0; right: 0;
         display: flex; justify-content: center; align-items: center;
+        overflow: hidden;
     }
 </style>
 
@@ -13,20 +14,20 @@
     <div style="white-space: pre; font-family: monospace;">Booting Linux...</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/v86/0.5.0/libv86.js"></script>
+<script src="libv86.js"></script>
 <script>
 "use strict";
 
 window.onload = function() {
     var emulator = new V86Starter({
-        wasm_path: "https://cdnjs.cloudflare.com/ajax/libs/v86/0.5.0/v86.wasm",
+        wasm_path: "v86.wasm",
         memory_size: 128 * 1024 * 1024,
         vga_memory_size: 2 * 1024 * 1024,
         screen_container: document.getElementById("screen_container"),
-        bios: { url: "https://cdnjs.cloudflare.com/ajax/libs/v86/0.5.0/bios/seabios.bin" },
-        vga_bios: { url: "https://cdnjs.cloudflare.com/ajax/libs/v86/0.5.0/bios/vgabios.bin" },
-        // Using a built-in tiny Linux image provided by v86
-        cdrom: { url: "https://cdnjs.cloudflare.com/ajax/libs/v86/0.5.0/images/linux.iso" },
+        bios: { url: "bios/seabios.bin" },
+        vga_bios: { url: "bios/vgabios.bin" },
+        // You will need to host a filesystem image to actually see a prompt
+        // For this example, it will boot to a black screen/BIOS error without one
         autostart: true,
     });
 };
