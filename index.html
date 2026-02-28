@@ -11,7 +11,7 @@
 </style>
 
 <div id="screen_container">
-    <div style="white-space: pre; font-family: monospace;">Booting Linux...</div>
+    <div style="white-space: pre; font-family: monospace;">Loading emulator...</div>
 </div>
 
 <script src="libv86.js"></script>
@@ -19,25 +19,35 @@
 <script>
 "use strict";
 
-// 2. Wait until everything is fully loaded before running
 window.onload = function() {
-    console.log("Attempting to start emulator...");
-    
-    // Check if V86Starter actually exists now
-    if (typeof V86Starter === "undefined") {
-        console.error("V86Starter is still not defined!");
-        return;
-    }
+    console.log("Loading WASM...");
 
-    var emulator = new V86Starter({
-        wasm_path: "v86.wasm",
-        memory_size: 128 * 1024 * 1024,
-        vga_memory_size: 2 * 1024 * 1024,
-        screen_container: document.getElementById("screen_container"),
-        bios: { url: "bios/seabios.bin" },
-        vga_bios: { url: "bios/vgabios.bin" },
-        cdrom: { url: "https://github.com/waaaaaaario/linux-in-browser/releases/tag/OS"},
-        autostart: true,
-    });
+    // 1. Explicitly fetch the WASM file first
+    fetch("v86.wasm")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to load v86.wasm. Check your Network tab for a 404.");
+            }
+            return response.arrayBuffer();
+        })
+        .then(() => {
+            console.log("WASM loaded. Starting emulator...");
+            
+            // 2. Initialize emulator only after WASM is confirmed loaded
+            var emulator = new V86Starter({
+                wasm_path: "v86.wasm",
+                memory_size: 256 * 1024 * 1024,
+                vga_memory_size: 2 * 1024 * 1024,
+                screen_container: document.getElementById("screen_container"),
+                bios: { url: "bios/seabios.bin" },
+                vga_bios: { url: "bios/vgabios.bin" },
+                cdrom: { url: "archlinux-2024.11.01-x86_64.iso" },
+                autostart: true,
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("screen_container").innerText = "Error: " + err.message;
+        });
 };
 </script>
