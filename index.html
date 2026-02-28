@@ -14,11 +14,21 @@
     <div style="white-space: pre; font-family: monospace;">Booting Linux...</div>
 </div>
 
-<script src="libv86.js" defer></script>
+<script src="libv86.js"></script>
+
 <script>
 "use strict";
 
+// 2. Wait until everything (including libv86.js) is loaded
 window.onload = function() {
+    console.log("Starting emulator...");
+    
+    // Check if V86Starter exists
+    if (typeof V86Starter === "undefined") {
+        console.error("V86Starter is not defined! Check if libv86.js loaded successfully.");
+        return;
+    }
+
     var emulator = new V86Starter({
         wasm_path: "v86.wasm",
         memory_size: 128 * 1024 * 1024,
