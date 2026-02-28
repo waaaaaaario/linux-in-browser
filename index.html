@@ -34,7 +34,7 @@ window.onload = function() {
             console.log("WASM loaded. Starting emulator...");
             
             // 2. Initialize emulator only after WASM is confirmed loaded
-            var emulator = new V86Starter({
+            var emulator = new V86({
                 wasm_path: "v86.wasm",
                 memory_size: 256 * 1024 * 1024,
                 vga_memory_size: 2 * 1024 * 1024,
